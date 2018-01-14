@@ -1,7 +1,3 @@
-/*  This file has been created by Nataniel Ruiz affiliated with Wall Lab
- *  at the Georgia Institute of Technology School of Interactive Computing
- */
-
 package org.tensorflow.demo;
 
 import android.content.Context;
@@ -14,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 
 import org.tensorflow.demo.Classifier.Recognition;
-import org.tensorflow.demo.TensorFlowImageListener;
 
 import java.util.List;
 

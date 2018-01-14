@@ -1,22 +1,3 @@
-/* Copyright 2015 The TensorFlow Authors. All Rights Reserved.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-==============================================================================*/
-
-/*  This file has been modified by Nataniel Ruiz affiliated with Wall Lab
- *  at the Georgia Institute of Technology School of Interactive Computing
- */
-
 package org.tensorflow.demo;
 
 import android.content.res.AssetManager;
@@ -163,6 +144,7 @@ class TensorFlowClassifier implements Classifier {
 
     // I will try to output the best bounding box and class.
     // First get best probability
+    /*
     float highest_prob = 0;
     int hp_i = 0;
     int hp_j = 0;
@@ -183,25 +165,55 @@ class TensorFlowClassifier implements Classifier {
         }
       }
     }
+    */
+    int hp_i = 0;
+    int hp_j = 0;
+    int hp_l = 0;
+    int hp_m = 0;
 
-    // Get x, y, width, height. These will be processed and drawn in BoundingBoxView.
-    float bounding_x = boxes[hp_l][hp_m][hp_i][0];
-    float bounding_y = boxes[hp_l][hp_m][hp_i][1];
-    float box_width = boxes[hp_l][hp_m][hp_i][2] / 2;
-    float box_height = boxes[hp_l][hp_m][hp_i][3] / 2;
+    float bounding_x = 0;
+    float bounding_y = 0;
+    float box_width = 0;
+    float box_height = 0;
 
-    // Now get the class number.
-    int predicted_class = hp_j;
+    int predicted_class = 0;
+    String prediction_string = "";
+    RectF boundingBox = null;
 
-    // Now log this prediction.
-    String prediction_string = Integer.toString(predicted_class) + " | x1: " + Float.toString(bounding_x) +
-            " y1: " + Float.toString(bounding_y) + " width: " + Float.toString(box_width) +
-            " height: " + Float.toString(box_height);
-    Log.i("Java prediction --- ", prediction_string);
+    for (int i = 0; i < 2; i++) {
+      for (int j = 0; j < 20; j++) {
+        for (int l = 0; l < 7; l++) {
+          for (int m = 0; m < 7; m++) {
+            if (probs[l][m][i][j] >= 0.15) {
+              hp_i = i;
+              hp_j = j;
+              hp_l = l;
+              hp_m = m;
 
-    // Add recognition to recognition list.
-    final RectF boundingBox = new RectF(bounding_x, bounding_y, box_width, box_height);
-    recognitions.add(new Recognition("Prediction ", class_labels[predicted_class], highest_prob, boundingBox));
+              // Get x, y, width, height. These will be processed and drawn in BoundingBoxView.
+              bounding_x = boxes[hp_l][hp_m][hp_i][0];
+              bounding_y = boxes[hp_l][hp_m][hp_i][1];
+              box_width = boxes[hp_l][hp_m][hp_i][2] / 2;
+              box_height = boxes[hp_l][hp_m][hp_i][3] / 2;
+
+              // Now get the class number.
+              predicted_class = hp_j;
+
+              // Now log this prediction.
+              prediction_string = Integer.toString(predicted_class) + " | x1: " + Float.toString(bounding_x) +
+                      " y1: " + Float.toString(bounding_y) + " width: " + Float.toString(box_width) +
+                      " height: " + Float.toString(box_height);
+              Log.i("Java prediction --- ", prediction_string);
+
+              // Add recognition to recognition list.
+              boundingBox = new RectF(bounding_x, bounding_y, box_width, box_height);
+              recognitions.add(new Recognition("Prediction ", class_labels[predicted_class], probs[l][m][i][j], boundingBox));
+            }
+          }
+        }
+      }
+    }
+
     Trace.endSection();
     return recognitions;
   }
