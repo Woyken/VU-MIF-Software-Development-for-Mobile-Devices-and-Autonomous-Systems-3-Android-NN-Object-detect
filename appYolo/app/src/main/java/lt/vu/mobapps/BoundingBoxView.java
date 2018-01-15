@@ -1,4 +1,4 @@
-package org.tensorflow.demo;
+package lt.vu.mobapps;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,9 +9,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import org.tensorflow.demo.Classifier.Recognition;
-
 import java.util.List;
+
+import lt.vu.mobapps.Classifier.Recognition;
 
 public class BoundingBoxView extends View {
     private List<Recognition> results;

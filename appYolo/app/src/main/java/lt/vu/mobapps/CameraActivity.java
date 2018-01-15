@@ -1,4 +1,4 @@
-package org.tensorflow.demo;
+package lt.vu.mobapps;
 
 import android.Manifest;
 import android.app.Activity;
@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import org.tensorflow.mobapps.R;
 
 public class CameraActivity extends Activity {
   private static final int PERMISSIONS_REQUEST = 1;

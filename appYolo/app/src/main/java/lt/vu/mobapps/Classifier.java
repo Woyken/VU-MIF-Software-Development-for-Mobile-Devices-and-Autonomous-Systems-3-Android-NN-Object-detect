@@ -1,4 +1,4 @@
-package org.tensorflow.demo;
+package lt.vu.mobapps;
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;

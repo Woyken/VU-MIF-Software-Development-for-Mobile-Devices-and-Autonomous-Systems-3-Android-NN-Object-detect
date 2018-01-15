@@ -13,7 +13,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-package org.tensorflow.demo;
+package org.tensorflow.mobapps;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -29,8 +29,8 @@ import android.os.Trace;
 
 import junit.framework.Assert;
 
-import org.tensorflow.demo.env.ImageUtils;
-import org.tensorflow.demo.env.Logger;
+import org.tensorflow.mobapps.env.ImageUtils;
+import org.tensorflow.mobapps.env.Logger;
 
 import java.util.List;
 

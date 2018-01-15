@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.tensorflow.demo;
+package org.tensorflow.mobapps;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -50,7 +50,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.tensorflow.demo.env.Logger;
+import org.tensorflow.mobapps.env.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;

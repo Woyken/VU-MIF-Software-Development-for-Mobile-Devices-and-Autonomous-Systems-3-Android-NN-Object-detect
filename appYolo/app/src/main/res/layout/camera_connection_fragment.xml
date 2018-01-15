@@ -17,13 +17,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.tensorflow.demo.AutoFitTextureView
+    <lt.vu.mobapps.AutoFitTextureView
         android:id="@+id/texture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
-    <org.tensorflow.demo.BoundingBoxView
+    <lt.vu.mobapps.BoundingBoxView
         android:id="@+id/bounding"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

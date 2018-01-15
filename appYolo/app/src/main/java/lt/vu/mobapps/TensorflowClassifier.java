@@ -1,12 +1,10 @@
-package org.tensorflow.demo;
+package lt.vu.mobapps;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.os.Trace;
 import android.util.Log;
-
-import org.tensorflow.demo.env.Logger;
 
 import java.util.ArrayList;
 import java.util.List;

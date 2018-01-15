@@ -1,4 +1,4 @@
-package org.tensorflow.demo;
+package lt.vu.mobapps;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,7 +7,6 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.RectF;
@@ -32,10 +31,9 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
-import org.tensorflow.demo.env.Logger;
+import org.tensorflow.mobapps.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,6 +42,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+
+import lt.vu.mobapps.env.Logger;
 
 public class CameraConnectionFragment extends Fragment {
   private static final Logger LOGGER = new Logger();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.tensorflow.demo;
+package org.tensorflow.mobapps;
 
 import android.Manifest;
 import android.app.Activity;

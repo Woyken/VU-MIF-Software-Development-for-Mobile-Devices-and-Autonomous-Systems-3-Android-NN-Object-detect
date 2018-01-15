@@ -1,4 +1,4 @@
-package org.tensorflow.demo;
+package lt.vu.mobapps;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -14,10 +14,10 @@ import android.os.Trace;
 
 import junit.framework.Assert;
 
-import org.tensorflow.demo.env.ImageUtils;
-import org.tensorflow.demo.env.Logger;
-
 import java.util.List;
+
+import lt.vu.mobapps.env.ImageUtils;
+import lt.vu.mobapps.env.Logger;
 
 /**
  * Class that takes in preview frames and converts the image to Bitmaps to process with Tensorflow.

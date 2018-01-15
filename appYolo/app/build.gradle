@@ -5,7 +5,7 @@ android {
     buildToolsVersion '25.0.0'
 
     defaultConfig {
-        applicationId "org.tensorflow.tensorflowdemo"
+        applicationId "lt.vu.mobapps"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1

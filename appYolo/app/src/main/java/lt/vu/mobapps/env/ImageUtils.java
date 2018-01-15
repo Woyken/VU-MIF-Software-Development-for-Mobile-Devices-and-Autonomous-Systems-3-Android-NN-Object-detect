@@ -1,4 +1,4 @@
-package org.tensorflow.demo.env;
+package lt.vu.mobapps.env;
 
 import android.graphics.Bitmap;
 import android.os.Environment;
