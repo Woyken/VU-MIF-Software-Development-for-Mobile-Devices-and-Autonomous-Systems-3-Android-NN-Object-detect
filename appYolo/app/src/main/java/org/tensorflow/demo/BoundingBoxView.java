@@ -21,9 +21,9 @@ public class BoundingBoxView extends View {
         super(context, set);
 
         fgPaint = new Paint();
-        fgPaint.setColor(0xff00ff00);
+        fgPaint.setColor(0xff0000ff);
         fgPaint.setStyle(Paint.Style.STROKE);
-        fgPaint.setStrokeWidth(4);
+        fgPaint.setStrokeWidth(6);
 
         bgPaint = new Paint();
         bgPaint.setARGB(0, 0, 0, 0);
@@ -31,11 +31,11 @@ public class BoundingBoxView extends View {
         bgPaint.setStyle(Paint.Style.STROKE);
 
         trPaint = new Paint();
-        trPaint.setColor(0xff00ff00);
+        trPaint.setColor(0xff0000ff);
         trPaint.setStyle(Paint.Style.FILL);
 
         textPaint = new Paint();
-        textPaint.setColor(Color.BLACK);
+        textPaint.setColor(Color.GREEN);
         textPaint.setStyle(Paint.Style.STROKE);
         textPaint.setTextSize(50);  //set text size
     }
