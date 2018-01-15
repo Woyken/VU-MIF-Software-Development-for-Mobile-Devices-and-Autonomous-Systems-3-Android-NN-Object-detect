@@ -14,12 +14,6 @@ public interface Classifier {
    */
   public class Recognition {
     /**
-     * A unique identifier for what has been recognized. Specific to the class, not the instance of
-     * the object.
-     */
-    private final String id;
-
-    /**
      * Display name for the recognition.
      */
     private final String title;
@@ -34,16 +28,10 @@ public interface Classifier {
      */
     private final RectF location;
 
-    public Recognition(
-        final String id, final String title, final Float confidence, final RectF location) {
-      this.id = id;
+    public Recognition(final String title, final Float confidence, final RectF location) {
       this.title = title;
       this.confidence = confidence;
       this.location = location;
-    }
-
-    public String getId() {
-      return id;
     }
 
     public String getTitle() {
@@ -61,10 +49,6 @@ public interface Classifier {
     @Override
     public String toString() {
       String resultString = "";
-      if (id != null) {
-        resultString += "[" + id + "] ";
-      }
-
       if (title != null) {
         resultString += title + " ";
       }

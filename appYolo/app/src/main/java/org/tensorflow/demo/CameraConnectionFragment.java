@@ -58,8 +58,6 @@ public class CameraConnectionFragment extends Fragment {
   private static final int static_preview_width = 2560;
   private static final int static_preview_height = 1800;
 
-  private RecognitionScoreView scoreView;
-
   private BoundingBoxView boundingBoxView;
 
   /**
@@ -290,7 +288,6 @@ public class CameraConnectionFragment extends Fragment {
   @Override
   public void onViewCreated(final View view, final Bundle savedInstanceState) {
     textureView = (AutoFitTextureView) view.findViewById(R.id.texture);
-    scoreView = (RecognitionScoreView) view.findViewById(R.id.results);
     boundingBoxView = (BoundingBoxView) view.findViewById(R.id.bounding);
   }
 
@@ -555,7 +552,7 @@ public class CameraConnectionFragment extends Fragment {
 
     LOGGER.i("Getting assets.");
     tfPreviewListener.initialize(
-        getActivity().getAssets(), scoreView, boundingBoxView, inferenceHandler, sensorOrientation);
+        getActivity().getAssets(), boundingBoxView, inferenceHandler, sensorOrientation);
     LOGGER.i("TensorFlow initialized.");
   }
 

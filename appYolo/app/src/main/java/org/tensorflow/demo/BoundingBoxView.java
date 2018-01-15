@@ -96,7 +96,7 @@ public class BoundingBoxView extends View {
                 canvas.drawRect(boundingBox, bgPaint);
 
                 // Create class name text on bounding box.
-                String class_name = recog.getTitle();
+                String class_name = recog.getTitle() + " = " + recog.getConfidence();
                 float text_width = textPaint.measureText(class_name)/2;
                 float text_size = textPaint.getTextSize();
                 float text_center_x = bounding_x - 2;

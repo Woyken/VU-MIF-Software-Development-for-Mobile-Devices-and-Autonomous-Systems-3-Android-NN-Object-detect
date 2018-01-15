@@ -21,9 +21,11 @@ class TensorFlowClassifier implements Classifier {
 
   // Class labels for PASCAL VOC, used because the current model (YOLO v1)
   // has been trained on this detection task.
-  private final String[] class_labels =  {"aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car",
+  private String[] class_labels =  {"aeroplane", "bicycle", "bird", "boat", "bottle", "bus", "car",
           "cat", "chair", "cow", "diningtable", "dog", "horse", "motorbike", "person",
           "pottedplant", "sheep", "sofa", "train","tvmonitor"};
+
+  private int target_class_id = 14; // person
 
   // jni native methods.
   public native int initializeTensorFlow(
@@ -50,8 +52,8 @@ class TensorFlowClassifier implements Classifier {
     // Log this method so that it can be analyzed with systrace.
     Trace.beginSection("Recognize");
     final ArrayList<Recognition> recognitions = new ArrayList<Recognition>();
-    ArrayList<Float> temp_array = new ArrayList<Float>();
-    float[][][] class_probs = new float[7][7][20];
+    ArrayList<Float> temp_array = new ArrayList<>();
+    float[][] target_class_probs = new float[7][7];
     float[][][] scales = new float[7][7][2];
     float[][][][] boxes = new float[7][7][2][4];
 
@@ -65,7 +67,7 @@ class TensorFlowClassifier implements Classifier {
     final StringTokenizer st = new StringTokenizer(result);
     assert (!st.hasMoreTokens());
 
-    // Get all of the output and put it into an linear array.
+    // Get all of the output and put it into an linear array. (1470)
     for (int i = 0; i < 1470; i++) {
       final float token = Float.parseFloat(st.nextToken());
       temp_array.add(token);
@@ -74,25 +76,27 @@ class TensorFlowClassifier implements Classifier {
 
     // Convert the linear array to the output tensor (7x7x30)
     int counter = 0;
-    // Corresponds to class probs
+    // Corresponds to class probs (7x7x20)
     for (int i = 0; i < 7; i++) {
       for (int j = 0; j < 7; j++) {
-        for (int k = 0; k < 20; k++) {
-          class_probs[i][j][k] = temp_array.get(counter);
-          counter++;
-        }
+        target_class_probs[i][j] = temp_array.get(counter + target_class_id);
+        counter += 20;
+//        for (int k = 0; k < 20; k++) {
+//          class_probs[i][j][k] = temp_array.get(counter);
+//          counter++;
+//        }
       }
     }
-    // Corresponds to scales
+    // Corresponds to scales (7x7x2)
     for (int i = 0; i < 7; i++) {
       for (int j = 0; j < 7; j++) {
         for (int k = 0; k < 2; k++) {
-          scales[i][j][k] = temp_array.get(counter);
+          scales[i][j][k] = temp_array.get(counter + target_class_id);
           counter++;
         }
       }
     }
-    // Corresponds to boxes
+    // Corresponds to boxes (7x7x2x4)
     for (int i = 0; i < 7; i++) {
       for (int j = 0; j < 7; j++) {
         for (int k = 0; k < 2; k++) {
@@ -130,14 +134,12 @@ class TensorFlowClassifier implements Classifier {
       }
     }
 
-    float[][][][] probs = new float[7][7][2][20];
+    float[][][] probs = new float[7][7][2];
     // Combine conditional class probabilities and objectness probability.
     for (int i = 0; i < 2; i++) {
-      for (int j = 0; j < 20; j++) {
-        for (int l = 0; l < 7; l++) {
-          for (int m = 0; m < 7; m++) {
-            probs[l][m][i][j] = class_probs[l][m][j] * scales[l][m][i];
-          }
+      for (int l = 0; l < 7; l++) {
+        for (int m = 0; m < 7; m++) {
+          probs[l][m][i] = target_class_probs[l][m] * scales[l][m][i];
         }
       }
     }
@@ -181,34 +183,33 @@ class TensorFlowClassifier implements Classifier {
     RectF boundingBox = null;
 
     for (int i = 0; i < 2; i++) {
-      for (int j = 0; j < 20; j++) {
-        for (int l = 0; l < 7; l++) {
-          for (int m = 0; m < 7; m++) {
-            if (probs[l][m][i][j] >= 0.15) {
-              hp_i = i;
-              hp_j = j;
-              hp_l = l;
-              hp_m = m;
+      for (int l = 0; l < 7; l++) {
+        for (int m = 0; m < 7; m++) {
+          if (probs[l][m][i] >= 0.2) {
+            hp_i = i;
+            hp_j = target_class_id;
+            hp_l = l;
+            hp_m = m;
 
-              // Get x, y, width, height. These will be processed and drawn in BoundingBoxView.
-              bounding_x = boxes[hp_l][hp_m][hp_i][0];
-              bounding_y = boxes[hp_l][hp_m][hp_i][1];
-              box_width = boxes[hp_l][hp_m][hp_i][2] / 2;
-              box_height = boxes[hp_l][hp_m][hp_i][3] / 2;
+            // Get x, y, width, height. These will be processed and drawn in BoundingBoxView.
+            bounding_x = boxes[hp_l][hp_m][hp_i][0];
+            bounding_y = boxes[hp_l][hp_m][hp_i][1];
+            box_width = boxes[hp_l][hp_m][hp_i][2] / 2;
+            box_height = boxes[hp_l][hp_m][hp_i][3] / 2;
 
-              // Now get the class number.
-              predicted_class = hp_j;
+            // Now get the class number.
+            predicted_class = hp_j;
 
-              // Now log this prediction.
-              prediction_string = Integer.toString(predicted_class) + " | x1: " + Float.toString(bounding_x) +
-                      " y1: " + Float.toString(bounding_y) + " width: " + Float.toString(box_width) +
-                      " height: " + Float.toString(box_height);
-              Log.i("Java prediction --- ", prediction_string);
+            // Now log this prediction.
+            prediction_string = Integer.toString(predicted_class) + " | x1: " + Float.toString(bounding_x) +
+                    " y1: " + Float.toString(bounding_y) + " width: " + Float.toString(box_width) +
+                    " height: " + Float.toString(box_height);
+            Log.i("Java prediction --- ", prediction_string);
 
-              // Add recognition to recognition list.
-              boundingBox = new RectF(bounding_x, bounding_y, box_width, box_height);
-              recognitions.add(new Recognition("Prediction ", class_labels[predicted_class], probs[l][m][i][j], boundingBox));
-            }
+            // Add recognition to recognition list.
+            boundingBox = new RectF(bounding_x, bounding_y, box_width, box_height);
+//            recognitions.add(new Recognition(class_labels[predicted_class], probs[l][m][i], boundingBox));
+            recognitions.add(new Recognition(class_labels[predicted_class], probs[l][m][i], boundingBox));
           }
         }
       }
